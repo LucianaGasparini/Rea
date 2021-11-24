@@ -13,10 +13,26 @@ import { API_ALUNOS_URL } from "../../constants";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import EditIcon from '@mui/icons-material/Edit';
+import { useNavigate } from 'react-router-dom';
+import Lottie from "react-lottie";
+import animationData from "../../lotties/78259-loading.json";
+
+
 
 const AlunosListagem = () => {
+  const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
   const [alunos, setAlunos] = useState([]);
+
+const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   useEffect(() => {
     getAlunos();
@@ -24,7 +40,9 @@ const AlunosListagem = () => {
 
   const getAlunos = () => {
     axios.get(API_ALUNOS_URL).then((response) => {
+      setTimeout(()=> {
       setAlunos(response.data);
+    }, 5000)
     });
   };
 
@@ -33,11 +51,11 @@ const AlunosListagem = () => {
       .delete(API_ALUNOS_URL, { data: aluno })
       .then((response) => {
         MySwal.fire(<p>{response?.data?.message}</p>);
-        
+
         const alunoIndex = alunos.findIndex(
           (elemento) => elemento.id === aluno.id
         );
-        let newAlunos = [ ...alunos ];
+        let newAlunos = [...alunos];
         newAlunos.splice(alunoIndex, 1);
         setAlunos(newAlunos);
       })
@@ -49,9 +67,12 @@ const AlunosListagem = () => {
         });
       });
   };
-
+const editarAluno = (aluno) =>{
+navigate(`/editar-alunos/${aluno.id}`);
+}
   return (
     <Box sx={{ marginTop: "25px" }}>
+      {alunos.length > 0?(
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
@@ -59,7 +80,7 @@ const AlunosListagem = () => {
               <StyledTableCell>Nome</StyledTableCell>
               <StyledTableCell>Idade</StyledTableCell>
               <StyledTableCell>Cidade</StyledTableCell>
-              <StyledTableCell>Ações</StyledTableCell>
+              <StyledTableCell> Ações</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -69,6 +90,9 @@ const AlunosListagem = () => {
                 <StyledTableCell>{aluno.idade}</StyledTableCell>
                 <StyledTableCell>{aluno.cidade}</StyledTableCell>
                 <StyledTableCell>
+                <Button onClick={() => editarAluno(aluno)} variant="text">
+                    <EditIcon />
+                    </Button>
                   <Button onClick={() => deletarAluno(aluno)} variant="text">
                     <DeleteIcon />
                   </Button>
@@ -77,10 +101,14 @@ const AlunosListagem = () => {
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
-    </Box>
+      </TableContainer>   
+      ) :(
+        <>        
+        <Lottie options={defaultOptions} height={500} width={500} />
+        </>
+      )}
+       </Box>
   );
 };
-
 
 export default AlunosListagem;

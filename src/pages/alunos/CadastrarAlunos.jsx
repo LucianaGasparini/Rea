@@ -1,18 +1,63 @@
 import axios from "axios";
-import { useState } from "react";
-import { ButtonCadastro, Form, InputCadastro } from "../../components/Cadastros";
+import { useEffect, useState } from "react";
+import {
+  ButtonCadastro,
+  Form,
+  InputCadastro,
+} from "../../components/Cadastros";
 import { API_ALUNOS_URL } from "../../constants";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useParams } from "react-router";
+
+
 
 const CadastrarAlunos = () => {
+  const {id} = useParams();  
   const MySwal = withReactContent(Swal);
 
-  const [nome, setNome] = useState();
-  const [idade, setIdade] = useState();
-  const [cidade, setCidade] = useState();
+  const valorInicial = id ? " " : null;
+  const [nome, setNome] = useState(valorInicial);
+  const [idade, setIdade] = useState(valorInicial);
+  const [cidade, setCidade] = useState(valorInicial);
+
+  useEffect(() => {
+     getAlunos()
+  }, []);
+
+const getAlunos = ()=> {
+  axios.get(API_ALUNOS_URL).then((response) => {
+    response.data.forEach(aluno =>{
+      if(aluno.id == id){
+        setNome(aluno.nome);
+        setIdade(aluno.idade);
+        setCidade(aluno.cidade);
+      }
+    })
+    });
+  };
 
   const cadastrarAlunos = () => {
+    if (id) {
+      axios.put(API_ALUNOS_URL, {
+        id,
+        nome,
+        idade, 
+        cidade
+      }).then((response)=>{
+        console.log(response);
+        if (response.status === 200){
+          MySwal.fire(<p>{response?.data?.message}</p>);
+          limparCampos();
+        }
+      }).catch(error => {
+        MySwal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error,
+        })
+      });
+    } else{ 
     axios
       .post(API_ALUNOS_URL, {
         nome,
@@ -24,8 +69,15 @@ const CadastrarAlunos = () => {
           MySwal.fire(<p>{response?.data?.message}</p>);
           limparCampos();
         }
+      }).catch(error => {
+        MySwal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error,
+        })
       });
-  };
+  }
+};
 
   const limparCampos = () => {
     setNome("");
@@ -55,7 +107,7 @@ const CadastrarAlunos = () => {
       />
 
       <ButtonCadastro variant="contained" onClick={cadastrarAlunos}>
-        Cadastrar
+       {id?'Editar': 'Cadastrar'}
       </ButtonCadastro>
     </Form>
   );

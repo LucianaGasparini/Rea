@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 
-
-
 const Form = styled.form`
   display: flex;
   margin-top: 25px;
@@ -20,4 +18,4 @@ const ButtonCadastro = styled(Button)`
   margin: 10px auto;
 `;
 
-export { Form, InputCadastro, ButtonCadastro};
+export { Form, InputCadastro, ButtonCadastro };
