@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { StyledTableCell, StyledTableRow } from "./styles";
-import { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { API_ALUNOS_URL } from "../../constants";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -17,13 +17,16 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
 import Lottie from "react-lottie";
 import animationData from "../../lotties/78259-loading.json";
-
+import {TemaContext, AlunoContext} from '../../context';
+import MaxContainer from "../../components/MaxContainer";
 
 
 const AlunosListagem = () => {
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
-  const [alunos, setAlunos] = useState([]);
+  //const [alunos, setAlunos] = useState([]);
+  const {tema, setTema} = useContext(TemaContext);
+  const {aluno, setAluno} = useContext(AlunoContext);
 
 const defaultOptions = {
     loop: true,
@@ -41,23 +44,23 @@ const defaultOptions = {
   const getAlunos = () => {
     axios.get(API_ALUNOS_URL).then((response) => {
       setTimeout(()=> {
-      setAlunos(response.data);
+      setAluno(response.data);
     }, 5000)
     });
   };
 
-  const deletarAluno = (aluno) => {
+  const deletarAluno = (alunoDel) => {
     axios
-      .delete(API_ALUNOS_URL, { data: aluno })
+      .delete(API_ALUNOS_URL, { data: alunoDel })
       .then((response) => {
         MySwal.fire(<p>{response?.data?.message}</p>);
 
-        const alunoIndex = alunos.findIndex(
-          (elemento) => elemento.id === aluno.id
+        const alunoIndex = aluno.findIndex(
+          (elemento) => elemento.id === alunoDel.id
         );
-        let newAlunos = [...alunos];
+        let newAlunos = [...aluno];
         newAlunos.splice(alunoIndex, 1);
-        setAlunos(newAlunos);
+        setAluno(newAlunos);
       })
       .catch((error) => {
         MySwal.fire({
@@ -70,30 +73,33 @@ const defaultOptions = {
 const editarAluno = (aluno) =>{
 navigate(`/editar-alunos/${aluno.id}`);
 }
-  return (
-    <Box sx={{ marginTop: "25px" }}>
-      {alunos.length > 0?(
+  return (   
+    <Box sx={{ marginTop: "25px", backgroundColor: tema == 'dark' ? "#292727": "#f6f6f6", 
+    color: tema == 'dark'?"#f6f6f6" : "#292727" }}>
+      {aluno.length > 0?(
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+        <Table sx={{ minWidth: 700, backgroundColor: tema == 'dark' ? "#292727": "#f6f6f6",
+      color: tema == 'dark'?"#f6f6f6" : "#292727"}} 
+      aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Nome</StyledTableCell>
-              <StyledTableCell>Idade</StyledTableCell>
-              <StyledTableCell>Cidade</StyledTableCell>
-              <StyledTableCell> Ações</StyledTableCell>
+              <StyledTableCell sx={{color: tema == 'dark'?"#f6f6f6" : "#292727"}}>Nome</StyledTableCell>
+              <StyledTableCell sx={{color: tema == 'dark'?"#f6f6f6" : "#292727"}}>Idade</StyledTableCell>
+              <StyledTableCell sx={{color: tema == 'dark'?"#f6f6f6" : "#292727" }}>Cidade</StyledTableCell>
+              <StyledTableCell sx={{color: tema == 'dark'?"#f6f6f6" : "#292727" }} > Ações</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {alunos.map((aluno) => (
+            {aluno.map((alunoAtual) => (
               <StyledTableRow>
-                <StyledTableCell>{aluno.nome}</StyledTableCell>
-                <StyledTableCell>{aluno.idade}</StyledTableCell>
-                <StyledTableCell>{aluno.cidade}</StyledTableCell>
+                <StyledTableCell sx={{color: tema == 'dark'?"#f6f6f6" : "#292727" }}>{alunoAtual.nome}</StyledTableCell>
+                <StyledTableCell sx={{color: tema == 'dark'?"#f6f6f6" : "#292727" }}>{alunoAtual.idade}</StyledTableCell>
+                <StyledTableCell sx={{color: tema == 'dark'?"#f6f6f6" : "#292727" }}>{alunoAtual.cidade}</StyledTableCell>
                 <StyledTableCell>
-                <Button onClick={() => editarAluno(aluno)} variant="text">
+                <Button onClick={() => editarAluno(alunoAtual)} variant="text">
                     <EditIcon />
                     </Button>
-                  <Button onClick={() => deletarAluno(aluno)} variant="text">
+                  <Button onClick={() => deletarAluno(alunoAtual)} variant="text">
                     <DeleteIcon />
                   </Button>
                 </StyledTableCell>
@@ -108,6 +114,7 @@ navigate(`/editar-alunos/${aluno.id}`);
         </>
       )}
        </Box>
+    
   );
 };
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { API_MATERIAS_URL } from "../../constants";
 import Table from "@mui/material/Table";
@@ -17,12 +17,14 @@ import { useNavigate } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import Lottie from 'react-lottie';
 import animationData from '../../lottiesmat/9914-loading-success-fail-spinner-stroke-update.json'
-
+import {TemaContext} from '../../context';
 
 const MateriasListagem = () => {
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
   const [materias, setMaterias] = useState([]);
+  const {tema, setTema} = useContext(TemaContext);
+
 
   const defaultOptions = {
     loop: true,
@@ -71,24 +73,25 @@ const MateriasListagem = () => {
     navigate (`/editar-materias/${materia.id}`);
   }
   return (
-    <Box sx={{ marginTop: "25px" }}>
+    <Box sx={{ marginTop: "25px", backgroundColor: tema == 'dark' ? "#292727": "#f6f6f6"}}>
       {materias.length > 0 ? (
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="caption table">
-          <caption>Base de dados: Turma Teresópolis 008 </caption>
+        <Table sx={{ minWidth: 650, backgroundColor: tema == 'dark' ? "#292727": "#f6f6f6"
+     }} aria-label="caption table">
+          <caption >Base de dados: Turma Teresópolis 008 </caption>
           <TableHead>
             <TableRow>
-              <TableCell style={{ fontWeight: "bold" }}>
-                {" "}
-                Matérias Disciplinares{" "}
+              <TableCell sx={{ fontWeight: "bold", color: tema == 'dark'?"#f6f6f6" : "#292727"}}>
+                
+                Matérias Disciplinares
               </TableCell>
-              <TableCell align="right" style={{ fontWeight: "bold" }}>
+              <TableCell align="right"sx={{ fontWeight: "bold", color: tema == 'dark'?"#f6f6f6" : "#292727"}} >
                 Título
               </TableCell>
-              <TableCell align="right" style={{ fontWeight: "bold" }}>
+              <TableCell align="right" sx={{ fontWeight: "bold", color: tema == 'dark'?"#f6f6f6" : "#292727"}} >
                 Professor
-              </TableCell>              
-              <TableCell align="right" style={{ fontWeight: "bold" }}>
+              </TableCell>             
+              <TableCell align="right" sx={{fontWeight: "bold",  color: tema == 'dark'?"#f6f6f6" : "#292727"}}>
                 Ações
               </TableCell>
             </TableRow>
@@ -99,8 +102,8 @@ const MateriasListagem = () => {
                 <TableCell component="th" scope="materias">
                   {materias.titulo}
                 </TableCell>
-                <TableCell align="right">{materia.titulo}</TableCell>
-                <TableCell align="right">{materia.professor_nome}</TableCell>
+                <TableCell align="right"sx={{ color: tema == 'dark'?"#f6f6f6" : "#292727"}}>{materia.titulo}</TableCell>
+                <TableCell align="right"sx={{ color: tema == 'dark'?"#f6f6f6" : "#292727"}}>{materia.professor_nome}</TableCell>
                 <Button onClick={() => editarMateria(materia)} variant="text">
                   <EditIcon />
                   </Button>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import {useContext, useEffect, useState } from "react";
 import {
   ButtonCadastro,
   Form,
@@ -9,12 +9,16 @@ import { API_ALUNOS_URL } from "../../constants";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useParams } from "react-router";
-
+//import AlunosListagem from "./AlunosListagem";
+import {TemaContext, AlunoContext} from '../../context';
+import Box from "@mui/material/Box";
 
 
 const CadastrarAlunos = () => {
   const {id} = useParams();  
   const MySwal = withReactContent(Swal);
+  const {aluno, setAluno} = useContext(AlunoContext);
+  const {tema, setTema} = useContext(TemaContext);
 
   const valorInicial = id ? " " : null;
   const [nome, setNome] = useState(valorInicial);
@@ -25,17 +29,26 @@ const CadastrarAlunos = () => {
      getAlunos()
   }, []);
 
-const getAlunos = ()=> {
-  axios.get(API_ALUNOS_URL).then((response) => {
-    response.data.forEach(aluno =>{
-      if(aluno.id == id){
-        setNome(aluno.nome);
-        setIdade(aluno.idade);
-        setCidade(aluno.cidade);
-      }
-    })
-    });
-  };
+// const getAlunos = ()=> {
+//   axios.get(API_ALUNOS_URL).then((response) => {
+//     response.data.forEach(aluno =>{
+//       if(aluno.id == id){
+//         setNome(aluno.nome);
+//         setIdade(aluno.idade);
+//         setCidade(aluno.cidade);
+//       }
+//     })
+//     });
+//   };
+
+const getAlunos = () =>{
+  aluno.forEach((aluno) =>{
+          if(aluno.id == id){
+            setNome(aluno.nome);
+            setIdade(aluno.idade);
+            setCidade(aluno.cidade);
+          }})
+}
 
   const cadastrarAlunos = () => {
     if (id) {
@@ -86,8 +99,10 @@ const getAlunos = ()=> {
   };
 
   return (
-    <Form>
-      <InputCadastro
+ <Box sx={{ marginTop: "25px", backgroundColor: tema == 'dark' ? "#292727": "#f6f6f6", 
+ color: tema == 'dark'?"#f6f6f6" : "#292727" }}>
+    <Form >
+      <InputCadastro   sx = {{color : tema == 'dark'?"#f6f6f6" : "#292727" }} 
         label="Nome"
         variant="outlined"
         value={nome}
@@ -110,6 +125,7 @@ const getAlunos = ()=> {
        {id?'Editar': 'Cadastrar'}
       </ButtonCadastro>
     </Form>
+    </Box>
   );
 };
 

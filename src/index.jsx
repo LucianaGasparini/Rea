@@ -3,11 +3,15 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import { BrowserRouter, useRoutes } from "react-router-dom";
 import AlunosListagem from "./pages/alunos/AlunosListagem";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import Container from "@mui/material/Container";
 import CadastrarAlunos from "./pages/alunos/CadastrarAlunos";
 import MateriasListagem from "./pages/materias/MateriasListagem";
 import CadastrarMaterias from "./pages/materias/CadastrarMaterias";
+import { TemaProvider, AlunoProvider } from "./context";
+import MaxContainer from "./components/MaxContainer";
+
+
 
 const Routes = () => {
   const routes = useRoutes([
@@ -24,12 +28,23 @@ const Routes = () => {
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+  
+<TemaProvider>
+  <AlunoProvider> 
+  <MaxContainer>
+    <BrowserRouter>  
+   
       <Navbar />
       <Container maxWidth="md">
         <Routes />
-      </Container>
-    </BrowserRouter>
+      </Container>     
+      
+    </BrowserRouter>  
+    </MaxContainer> 
+    </AlunoProvider>
+   
+    </TemaProvider>
+
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -6,7 +6,10 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Button } from "@mui/material";
 import { useParams } from "react-router";
-import { useEffect, useState } from "react";
+import {TemaContext} from '../../context';
+import {useContext, useEffect, useState } from "react";
+import { style } from "@mui/system";
+import { Container } from "@mui/material";
 
 const CadastrarMaterias = () => {
   const {id} = useParams();
@@ -15,6 +18,7 @@ const CadastrarMaterias = () => {
   const valorInicial = id ?" ": null;
   const [titulo, setTitulo] = useState(valorInicial);
   const [professor_nome, setProfessor_nome] = useState(valorInicial);
+  const {tema, setTema} = useContext(TemaContext);
 
   useEffect(() => {
     getAlunos ()
@@ -76,15 +80,17 @@ const CadastrarMaterias = () => {
     setProfessor_nome("");
   };
   return (
-    <Box
+    <Container sx = {{marginTop: "25px", width: "100%", backgroundColor: tema == 'dark' ? "#292727": "#f6f6f6"}}>
+    <Box     
       component="form"
       sx={{
-        "& > :not(style)": { m: 1, width: "25ch" },
+        "& > :not(style)": { m: 3, width: "25ch" }, backgroundColor: tema == 'dark' ? "#292727": "#f6f6f6", 
+        color: tema == 'dark'?"#f6f6f6" : "#292727"
       }}
       noValidate
       autoComplete="off"
     >
-      <TextField
+      <TextField 
         label="Título da matéria"
         value={titulo}
         onChange={(e) => setTitulo(e.target.value)}
@@ -103,6 +109,7 @@ const CadastrarMaterias = () => {
         {id? 'Editar' :'Cadastrar'}
       </Button>
     </Box>
+    </Container>
   );
 };
 
