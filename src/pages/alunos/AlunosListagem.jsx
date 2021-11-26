@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import Lottie from "react-lottie";
 import animationData from "../../lotties/78259-loading.json";
 import {TemaContext, AlunoContext} from '../../context';
-import MaxContainer from "../../components/MaxContainer";
+//import SimpleContainer from "../../components/MaxContainer";
 
 
 const AlunosListagem = () => {
@@ -73,12 +73,13 @@ const defaultOptions = {
 const editarAluno = (aluno) =>{
 navigate(`/editar-alunos/${aluno.id}`);
 }
-  return (   
-    <Box sx={{ marginTop: "25px", backgroundColor: tema == 'dark' ? "#292727": "#f6f6f6", 
+  return (  
+    
+    <Box sx={{ marginTop: "60px", backgroundColor: tema == 'dark' ? "#292727": "#d3c8c8", 
     color: tema == 'dark'?"#f6f6f6" : "#292727" }}>
       {aluno.length > 0?(
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 700, backgroundColor: tema == 'dark' ? "#292727": "#f6f6f6",
+     
+        <Table sx={{backgroundColor: tema == 'dark' ? "#292727": "#f6f6f6",
       color: tema == 'dark'?"#f6f6f6" : "#292727"}} 
       aria-label="customized table">
           <TableHead>
@@ -107,14 +108,14 @@ navigate(`/editar-alunos/${aluno.id}`);
             ))}
           </TableBody>
         </Table>
-      </TableContainer>   
+    
       ) :(
         <>        
         <Lottie options={defaultOptions} height={500} width={500} />
         </>
       )}
        </Box>
-    
+   
   );
 };
 

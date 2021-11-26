@@ -28,3 +28,20 @@ export function TemaProvider ({children}){
             {children}
             </AlunoContext.Provider>
         )};
+
+      /*  export const UsuarioContext = createContext();
+        export const UsuarioProvider = ({children}) =>{
+            const [usuario, setUsuario]= useState(
+                "Usuário"
+            )
+            return (
+                <UsuarioContext.Provider
+                value={{
+                    usuario,
+                    setUsuario,
+                }}
+                >
+                    {children}
+                </UsuarioContext.Provider>         
+            );
+        };*/

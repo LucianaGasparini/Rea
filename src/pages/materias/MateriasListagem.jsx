@@ -73,14 +73,14 @@ const MateriasListagem = () => {
     navigate (`/editar-materias/${materia.id}`);
   }
   return (
-    <Box sx={{ marginTop: "25px", backgroundColor: tema == 'dark' ? "#292727": "#f6f6f6"}}>
+    <Box sx={{ marginTop: "60px", backgroundColor: tema == 'dark' ? "#292727": "#f6f6f6"}}>
       {materias.length > 0 ? (
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650, backgroundColor: tema == 'dark' ? "#292727": "#f6f6f6"
      }} aria-label="caption table">
           <caption >Base de dados: Turma Teresópolis 008 </caption>
-          <TableHead>
-            <TableRow>
+          <TableHead >
+            <TableRow >
               <TableCell sx={{ fontWeight: "bold", color: tema == 'dark'?"#f6f6f6" : "#292727"}}>
                 
                 Matérias Disciplinares

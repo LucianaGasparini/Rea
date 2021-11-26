@@ -9,9 +9,7 @@ import CadastrarAlunos from "./pages/alunos/CadastrarAlunos";
 import MateriasListagem from "./pages/materias/MateriasListagem";
 import CadastrarMaterias from "./pages/materias/CadastrarMaterias";
 import { TemaProvider, AlunoProvider } from "./context";
-import MaxContainer from "./components/MaxContainer";
-
-
+import {SimpleContainer } from "./components/MaxContainer";
 
 const Routes = () => {
   const routes = useRoutes([
@@ -20,7 +18,7 @@ const Routes = () => {
     { path: "/editar-alunos/:id", element: <CadastrarAlunos /> },
     { path: "/materias", element: <MateriasListagem /> },
     { path: "/cadastrar-materias", element: <CadastrarMaterias /> },
-    { path: "/editar-materias/:id", element: <CadastrarMaterias /> }
+    { path: "/editar-materias/:id", element: <CadastrarMaterias /> },
   ]);
 
   return routes;
@@ -28,23 +26,19 @@ const Routes = () => {
 
 ReactDOM.render(
   <React.StrictMode>
-  
-<TemaProvider>
-  <AlunoProvider> 
-  <MaxContainer>
-    <BrowserRouter>  
-   
-      <Navbar />
-      <Container maxWidth="md">
-        <Routes />
-      </Container>     
-      
-    </BrowserRouter>  
-    </MaxContainer> 
-    </AlunoProvider>
-   
-    </TemaProvider>
-
+    <TemaProvider> 
+      <SimpleContainer >  
+        <AlunoProvider>
+          <BrowserRouter>
+            <Navbar />
+            
+            <Container maxWidth="md">
+              <Routes />
+            </Container>
+          </BrowserRouter>
+        </AlunoProvider> 
+        </SimpleContainer >      
+        </TemaProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

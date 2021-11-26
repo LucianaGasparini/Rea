@@ -1,25 +1,30 @@
 import{ useContext } from "react";
 import { TemaContext } from "../context/index";
+import * as React from 'react';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import RestoreIcon from '@mui/icons-material/Restore';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
-const MaxContainer = (props) => {
-  const { tema, setTema } = useContext(TemaContext);
 
+export default function SimpleContainer({children}) {
+  const {tema, setTema} = useContext(TemaContext);
   return (
-    <div sx={{ backgroundColor: tema == "dark" ? "#121212" : "#f6f6f6" }}>
-      {props.children}
-      <div
-        style={{
-          width: "100%",
-          height: "50px",
-          backgroundColor: "#c2c2c2",
-          color: "#fff",
-          display: "flex",
-          position: "fixed",
-          bottom: 0,
-        }}
-      ></div>
-    </div>
-  );
-};
+    <React.Fragment>
+      <CssBaseline />
+     
+        <Box sx={{ Width:'100%', bgcolor: '#b6d1e7', backgroundColor: tema == 'dark' ? "#4b4949": "#b6d1e7" }}
+        >
 
-export default MaxContainer;
+        {children}
+       </Box>
+    
+    </React.Fragment>
+  );
+}
+
+
+export {SimpleContainer};

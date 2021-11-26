@@ -6,8 +6,9 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import { Switch } from "@mui/material";
-import { TemaContext } from "../../context";
+import { TemaContext, UsuarioContext } from "../../context";
 import { ThemeWrapper, MaterialUISwitch } from "./styles";
+
 
 /*const ButtonMenu = styled (IconButton)`
   backgroundColor:'lightslategrey',
@@ -30,7 +31,7 @@ export default function ButtonAppBar() {
  
   return (
     <Box sx={{ flexGrow: 1, }}>
-      <AppBar position="static" sx = {{backgroundColor: tema == 'dark' ? "#292727": "#1976d2"}}>
+      <AppBar position="fixed" sx = {{backgroundColor: tema == 'dark' ? "#292727": "#1976d2"}}>
         <Toolbar>
           <Link to="/">
             <IconButton                      
@@ -82,7 +83,8 @@ export default function ButtonAppBar() {
             </IconButton>
           </Link>
           <ThemeWrapper >
-            <MaterialUISwitch value={switchTema} onChange={mudouSwitch}/>
+            <MaterialUISwitch value={switchTema} onChange={mudouSwitch}/>           
+
            </ ThemeWrapper >
         </Toolbar>
       </AppBar>
